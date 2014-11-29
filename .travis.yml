@@ -5,3 +5,9 @@ script:
   - go test
 services:
   - redis-server
+install:
+  - go get github.com/smartystreets/goconvey
+  - go get github.com/garyburd/redigo/redis
+  - go get github.com/jmoiron/sqlx
+  - go get github.com/tj/go-debug
+  - go get github.com/lib/pq

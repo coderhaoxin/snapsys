@@ -4,7 +4,7 @@ import . "github.com/smartystreets/goconvey/convey"
 import "testing"
 
 func TestProduct(t *testing.T) {
-	Convey("get products", t, func() {
+	Convey("getProducts", t, func() {
 		Convey("success", func() {
 			products := getProducts(0, 20)
 
@@ -21,7 +21,7 @@ func TestProduct(t *testing.T) {
 		})
 	})
 
-	Convey("load products", t, func() {
+	Convey("loadProducts", t, func() {
 		Convey("success", func() {
 			err := loadProducts(0, 20)
 

@@ -4,6 +4,7 @@ import "github.com/garyburd/redigo/redis"
 import "github.com/jmoiron/sqlx"
 import _ "github.com/lib/pq"
 import "time"
+import "os"
 
 var redisPool *redis.Pool
 var psqlPool *sqlx.DB
@@ -17,7 +18,7 @@ func init() {
 
 	// limit
 	limitCountPerProduct = 1
-	limitCountPerUser = 1
+	limitCountPerUser = 2
 
 	// redis
 	redisPool = &redis.Pool{
@@ -37,8 +38,15 @@ func init() {
 
 	// postgre
 	psqlPool, err = sqlx.Connect("postgres", "user=hx dbname=hx sslmode=disable")
+	panicError(err)
 
-	if err != nil {
-		panic(err)
+	// empty redis for test or development
+	if os.Getenv("GOLANG_ENV") != "production" {
+		_, err = redisPool.Get().Do("FLUSHDB")
+		panicError(err)
 	}
+
+	// load products
+	err = loadProducts(0, 20)
+	panicError(err)
 }

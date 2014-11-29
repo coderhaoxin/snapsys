@@ -7,6 +7,8 @@ func loadProducts(skip, limit int) error {
 	// load products from postgre to redis
 	// key: product-productId
 	// value: json string
+	// key: product-productId-snap
+	// value: int
 	products := getProducts(skip, limit)
 
 	for _, v := range products {
@@ -16,8 +18,12 @@ func loadProducts(skip, limit int) error {
 			return err
 		}
 
-		_, err = redisPool.Get().Do("SET", "product-"+strconv.FormatInt(v.Id, 10), bytes)
+		err = setRedisKeyValue("product-"+strconv.FormatInt(v.Id, 10), bytes)
+		if err != nil {
+			return err
+		}
 
+		err = setRedisKeyValue("product-"+strconv.FormatInt(v.Id, 10)+"-snap", 0)
 		if err != nil {
 			return err
 		}

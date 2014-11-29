@@ -8,9 +8,11 @@ type Snap struct {
 	CreateTime int64
 }
 
-type Order struct{}
+type Order struct {
+}
 
-type Record struct{}
+type Record struct {
+}
 
 type Product struct {
 	Id    int64  `db:"id"`

@@ -2,7 +2,7 @@ package snapsys
 
 func getRedisKeys(pattern string) []string {
 	var result []string
-
+	// warning: KEYS is not for production
 	reply, err := redisPool.Get().Do("KEYS", pattern)
 
 	if err != nil {
@@ -34,4 +34,15 @@ func getRedisValueByKey(key interface{}) interface{} {
 	}
 
 	return reply
+}
+
+func setRedisKeyValue(key interface{}, value interface{}) error {
+	_, err := redisPool.Get().Do("SET", key, value)
+	return err
+}
+
+func panicError(e error) {
+	if e != nil {
+		panic(e)
+	}
 }
